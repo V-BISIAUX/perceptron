@@ -19,9 +19,18 @@ impl Perceptron {
         let mut y = [0u8; N_SORTIES];
 
         for i in 0..N_SORTIES {
-            let somme: f32 = x.iter().zip(self.poids[0]).map(|(pixel, poids)| pixel * poids).sum();
+            let somme: f32 = x.iter().zip(self.poids[i]).map(|(pixel, w_poids)| pixel * w_poids).sum();
             y[i] = if (somme - self.theta) >= 0.0 {1} else {0};
         }
         y
+    }
+
+    pub fn apprendre(&mut self, x: &Motif, cible: [u8; N_SORTIES], mu: f32) {
+        let sortie = self.propager(x);
+
+        for i in 0..N_SORTIES {
+            let erreur = cible[i] as f32 - sortie[i] as f32;
+            self.poids[i].iter_mut().zip(x).for_each(|(w_poids, pixel)| *w_poids += mu * erreur * pixel);
+        }
     }
 }

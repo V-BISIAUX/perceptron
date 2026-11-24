@@ -17,7 +17,13 @@ fn main() {
     println!("Motif C :");
     afficher(&C);
 
-    let reseau = Perceptron::new();
-    println!("Sortie pour A : {:?}", reseau.propager(&A));
-    println!("Sortie pour C : {:?}", reseau.propager(&C));
+    let mut reseau = Perceptron::new();
+    println!("Sortie originale pour A : {:?}", reseau.propager(&A));
+    println!("Sortie originale pour C : {:?}", reseau.propager(&C));
+    for i in 0..10 {
+        reseau.apprendre(&A, [0u8, 1u8], 0.1);
+        reseau.apprendre(&C, [0u8, 1u8], 0.1);
+        println!("Itération {} pour A : {:?}", i, reseau.propager(&A));
+        println!("Itération {} pour C : {:?}", i, reseau.propager(&C));
+    }
 }
